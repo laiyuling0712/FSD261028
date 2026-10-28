@@ -113,55 +113,20 @@ export const UATManagementModal: React.FC<UATManagementModalProps> = ({
           affectedModules: requirement.affectedModules,
         }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.criteria) {
-          const mappedItems: UATItem[] = data.criteria.map((c: any, i: number) => ({
-            id: `tc-ai-${Date.now()}-${i}`,
-            scenario: c.scenario,
-            expectedResult: c.expectedResult,
-            result: c.result || 'Pending',
-            note: c.note || 'AI 自動生成之情境',
-          }));
-          setItems(mappedItems);
-          setSignature(undefined);
-          return;
-        }
+      const data = await res.json();
+      if (data.success && data.criteria) {
+        const mappedItems: UATItem[] = data.criteria.map((c: any, i: number) => ({
+          id: `tc-ai-${Date.now()}-${i}`,
+          scenario: c.scenario,
+          expectedResult: c.expectedResult,
+          result: c.result || 'Pending',
+          note: c.note || 'AI 自動生成之情境',
+        }));
+        setItems(mappedItems);
+        setSignature(undefined);
       }
-      throw new Error('API unavailable on static hosting');
     } catch (err) {
-      const fallbackItems: UATItem[] = [
-        {
-          id: `tc-fb-${Date.now()}-1`,
-          scenario: '標準流程：現場操作員於正常權限下輸入有效參數並提交',
-          expectedResult: '系統在 0.8 秒內回傳成功並更新狀態，Log 正常寫入',
-          result: 'Pass',
-          note: '正常路徑 (Happy Path)'
-        },
-        {
-          id: `tc-fb-${Date.now()}-2`,
-          scenario: '異常流程：輸入負值、超長字串或特殊符號之例外檢驗',
-          expectedResult: '系統阻擋並跳出清楚之繁體中文提示，不拋出 500 錯誤',
-          result: 'Pending',
-          note: '邊界與型態驗證'
-        },
-        {
-          id: `tc-fb-${Date.now()}-3`,
-          scenario: '併發測試：兩台終端機台同時針對同一工單批次進行異動',
-          expectedResult: '資料庫啟用樂觀鎖 (Optimistic Locking)，防止重複扣帳',
-          result: 'Pending',
-          note: '多站點防衝突'
-        },
-        {
-          id: `tc-fb-${Date.now()}-4`,
-          scenario: '權限管制：非指定班長/工程師角色嘗試強制修改機台配置',
-          expectedResult: '彈出「權限不足」拒絕存取，並留存資安稽核紀錄',
-          result: 'Pending',
-          note: '資安與角色檢核'
-        }
-      ];
-      setItems(fallbackItems);
-      setSignature(undefined);
+      console.error(err);
     } finally {
       setIsAiGenerating(false);
     }

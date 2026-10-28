@@ -12,7 +12,6 @@ import {
   AlertCircle,
   HelpCircle,
 } from 'lucide-react';
-import sopInstructionCard from '../assets/images/mes_sop_instruction_card_1793073274392.jpg';
 
 interface ReleaseNoteModalProps {
   isOpen: boolean;
@@ -116,32 +115,12 @@ ${releaseData.precautions}
           benefits: requirement.benefitDescription,
         }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success) {
-          setReleaseData(data);
-          return;
-        }
+      const data = await res.json();
+      if (data.success) {
+        setReleaseData(data);
       }
-      throw new Error('API unavailable on static hosting');
     } catch (err) {
-      setReleaseData({
-        version: releaseData.version || 'v2.4.1',
-        releaseDate: new Date().toISOString().split('T')[0],
-        headline: `MES 產線升級公告：${requirement.title} 正式上線`,
-        overview: `本版本旨在全面優化 ${requirement.department || '產線作業'} 之作業效率，解決過去人工作業痛點，提供更流暢且具備自動防呆之作業體驗。`,
-        highlights: [
-          '新增一鍵防呆驗證，降低人工作業失誤',
-          '全面優化系統響應速度至 1 秒以內',
-          '與既有 ERP / 工單系統達成無縫即時連動'
-        ],
-        sopGuide: [
-          '步驟 1：開啟 MES 站台主畫面，點選左側選單進入「新功能模組」',
-          '步驟 2：掃描工單或批次條碼，系統自動帶出料件明細與規範',
-          '步驟 3：確認無誤後點擊「確認執行」，系統即時完成扣帳與上傳'
-        ],
-        precautions: '如遇條碼模糊或機台連線異常，請聯繫生管分機 8821 或 IT 專線 8800 進行手動調校。'
-      });
+      console.error(err);
     } finally {
       setIsAiGenerating(false);
     }
@@ -293,7 +272,7 @@ ${releaseData.precautions}
                 現場操作視覺化指南 (Visual SOP Illustration)
               </div>
               <img
-                src={sopInstructionCard}
+                src="/src/assets/images/mes_sop_instruction_card_1793073274392.jpg"
                 alt="MES SOP Diagram"
                 className="w-full h-auto max-h-[280px] object-cover bg-slate-950"
                 referrerPolicy="no-referrer"
