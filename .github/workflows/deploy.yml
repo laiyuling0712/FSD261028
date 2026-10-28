@@ -28,11 +28,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # 這裡移除了 cache 檢查，避免因為沒有 lock 檔而報錯
 
       - name: Install dependencies
-        # 將原本的 npm ci 改成一般的 npm install
-        run: npm install
+        # 這裡已經幫您加上了 --legacy-peer-deps，解決 edgesOut 報錯問題
+        run: npm install --legacy-peer-deps
 
       - name: Build project
         run: npm run build
@@ -48,4 +47,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
