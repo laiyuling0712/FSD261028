@@ -9,6 +9,8 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig(() => {
   return {
+    // 這裡加上 base 路徑，讓 GitHub Pages 能正確找到打包後的檔案
+    base: '/FSD261028/', 
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
