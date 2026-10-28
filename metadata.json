@@ -1,0 +1,8 @@
+{
+  "name": "MES 功能開發管理系統 (FSD)",
+  "description": "符合 FSD 規格之製造執行系統（MES）新功能開發管理平台，涵蓋結構化需求單、Wireframe 原型、技術影響評估、Scrum 派工、即時看板、UAT 驗收簽核與版本公告。",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
