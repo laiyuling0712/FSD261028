@@ -1,4 +1,6 @@
 import { MESRequirement, UserProfile, NotificationLog } from '../types';
+import wireframeTouchscreen from '../assets/images/mes_wireframe_touchscreen_1793073274076.jpg';
+import sopInstructionCard from '../assets/images/mes_sop_instruction_card_1793073274392.jpg';
 
 export const SYSTEM_USERS: UserProfile[] = [
   {
@@ -76,7 +78,7 @@ export const INITIAL_REQUIREMENTS: MESRequirement[] = [
       { id: 'att-1', name: 'SMT_上料混料異常統計表.xlsx', size: '1.4 MB', type: 'excel' },
       { id: 'att-2', name: '產線條碼格式規範書_v3.pdf', size: '820 KB', type: 'pdf' },
     ],
-    wireframeUrl: '/src/assets/images/mes_wireframe_touchscreen_1793073274076.jpg',
+    wireframeUrl: wireframeTouchscreen,
     wireframeAnnotations: [
       { id: 'ann-1', x: 30, y: 45, label: '條碼輸入框', description: '支援工業 USB 條碼槍自動輸入並觸發校驗' },
       { id: 'ann-2', x: 70, y: 28, label: '批號比對燈號', description: '綠燈 Pass / 紅燈鎖定並發出 85dB 警示音' },
@@ -248,7 +250,7 @@ export const INITIAL_REQUIREMENTS: MESRequirement[] = [
     attachments: [
       { id: 'att-5', name: 'AGV_調度通訊協定規範.pdf', size: '1.8 MB', type: 'pdf' },
     ],
-    wireframeUrl: '/src/assets/images/mes_sop_instruction_card_1793073274392.jpg',
+    wireframeUrl: sopInstructionCard,
     status: 'deployed',
     createdAt: '2026-09-20',
     updatedAt: '2026-10-15',

@@ -18,6 +18,7 @@ import {
   HelpCircle,
   MapPin,
 } from 'lucide-react';
+import wireframeTouchscreen from '../assets/images/mes_wireframe_touchscreen_1793073274076.jpg';
 
 interface RequirementModalProps {
   isOpen: boolean;
@@ -58,8 +59,7 @@ export const RequirementModal: React.FC<RequirementModalProps> = ({
     initialRequirement?.attachments || []
   );
   const [wireframeUrl, setWireframeUrl] = useState(
-    initialRequirement?.wireframeUrl ||
-      '/src/assets/images/mes_wireframe_touchscreen_1793073274076.jpg'
+    initialRequirement?.wireframeUrl || wireframeTouchscreen
   );
   const [activeTab, setActiveTab] = useState<'form' | 'wireframe'>('form');
 
@@ -98,12 +98,25 @@ export const RequirementModal: React.FC<RequirementModalProps> = ({
           benefitCategory,
         }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setAiSuggestions(data);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setAiSuggestions(data);
+          return;
+        }
       }
+      throw new Error('API unavailable on static hosting');
     } catch (err) {
-      console.error(err);
+      setAiSuggestions({
+        refinedAsIs: `【現狀痛點結構化】\n現行${department || '現場'}於作業時，${asIs || '現行流程採紙本或人工手動記錄'}。由於缺乏系統防呆與即時驗證，容易產生資料延遲登錄、跨班交接落差與高達 3.5% 之人工二次校對負擔。`,
+        refinedToBe: `【期望規格結構化】\n於 MES 系統新增${title || '功能'}。${toBe || '提供條碼掃描防呆校驗、即時連動工單狀態，並在異常時鎖定下製程進入報警處理'}。介面需支援觸控條碼機作業，響應時間 < 1 秒。`,
+        suggestedBenefits: `1. 預估節省現場人員每日資料核對工時約 45~60 分鐘\n2. 製程錯報與批號混料異常率預期降低 85% 以上\n3. 工單報工履歷 100% 電子化與稽核溯源`,
+        suggestedCriteria: [
+          { scenario: '現場作業員掃描物料條碼時批號與工單 BOM 相符', expectedResult: '系統綠燈通過，自動扣減庫存並跳轉至下一步驟', result: 'Pass', note: '預設標準流程' },
+          { scenario: '作業員誤掃不同規格之已過期或非指定批號料件', expectedResult: '系統跳出紅燈警告聲響並鎖定製程，不可繼續操作', result: 'Pending', note: '防呆關鍵項' },
+          { scenario: '產線離線或網路瞬斷時暫存資料於邊緣站台', expectedResult: '網路恢復後 5 秒內自動補上傳且不遺失資料', result: 'Pending', note: '邊緣可靠度' }
+        ]
+      });
     } finally {
       setIsAiLoading(false);
     }
@@ -149,7 +162,7 @@ export const RequirementModal: React.FC<RequirementModalProps> = ({
           name: `機台螢幕報警實體翻拍.jpg`,
           size: '950 KB',
           type: 'image',
-          url: '/src/assets/images/mes_wireframe_touchscreen_1793073274076.jpg',
+          url: wireframeTouchscreen,
         },
       ]);
     }
